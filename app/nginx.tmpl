@@ -1,0 +1,28 @@
+{{ range $host, $containers := groupBy $ "Env.AWS_ELB" }}
+{{ range $container := $containers }}
+{{ range $add := $container.Addresses }}
+
+
+server {
+  listen {{ $add.HostPort }};
+  server_name localhost;
+
+  location / {
+	proxy_pass      http://{{ if eq $add.HostPort "8888" }}localhost:{{ $add.Port }}/status;{{else}}{{ trim $host }}:{{ $add.Port }};{{end}}
+	proxy_redirect          off;
+	proxy_set_header        Host            $host;
+	proxy_set_header        X-Real-IP       $remote_addr;
+	proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+	client_max_body_size    10m;
+	client_body_buffer_size 128k;
+	proxy_connect_timeout   90;
+	proxy_send_timeout      90;
+	proxy_read_timeout      90;
+	proxy_buffers           32 4k;    
+}
+}
+
+{{end}}
+{{end}}
+{{end}}
+

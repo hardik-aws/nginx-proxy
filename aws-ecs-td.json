@@ -1,0 +1,89 @@
+{
+	"networkMode": "bridge",
+	"taskRoleArn": null,
+	"containerDefinitions": [{
+		"volumesFrom": [],
+		"memory": 128,
+		"extraHosts": null,
+		"dnsServers": [],
+		"disableNetworking": null,
+		"dnsSearchDomains": [],
+		"portMappings": [{
+				"hostPort": 80,
+				"containerPort": 80,
+				"protocol": "tcp"
+			},
+			{
+				"hostPort": 8888,
+				"containerPort": 8888,
+				"protocol": "tcp"
+			},
+			{
+				"hostPort": 8002,
+				"containerPort": 8002,
+				"protocol": "tcp"
+			},
+			{
+				"hostPort": 8001,
+				"containerPort": 8001,
+				"protocol": "tcp"
+			},
+			{
+				"hostPort": 8003,
+				"containerPort": 8003,
+				"protocol": "tcp"
+			},
+			{
+				"hostPort": 5050,
+				"containerPort": 5050,
+				"protocol": "tcp"
+			},
+			{
+				"hostPort": 5000,
+				"containerPort": 5000,
+				"protocol": "tcp"
+			}
+		],
+		"hostname": null,
+		"essential": true,
+		"entryPoint": [],
+		"mountPoints": [{
+			"containerPath": "/tmp/docker.sock",
+			"sourceVolume": "volume-0",
+			"readOnly": true
+		}],
+		"name": "nginx",
+		"ulimits": null,
+		"dockerSecurityOptions": [],
+		"environment": [{
+			"name": "AWS_ELB",
+			"value": "casca-sample-application-loadbalancer.com"
+		}],
+		"links": [],
+		"workingDirectory": null,
+		"readonlyRootFilesystem": false,
+		"image": "1234567890.dkr.ecr.us-east-1.amazonaws.com/proxy:12",
+		"command": [
+			"docker-gen",
+			"-watch",
+			"-notify",
+			"nginx",
+			"/app/nginx.tmpl",
+			"/etc/nginx/conf.d/default.conf"
+		],
+		"user": null,
+		"dockerLabels": null,
+		"logConfiguration": null,
+		"cpu": 0,
+		"privileged": false,
+		"memoryReservation": null
+	}],
+	"placementConstraints": [],
+	"volumes": [{
+		"host": {
+			"sourcePath": "/var/run/docker.sock"
+		},
+		"name": "volume-0"
+	}],
+	"family": "proxy"
+}
